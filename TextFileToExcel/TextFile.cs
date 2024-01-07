@@ -38,14 +38,14 @@ namespace TextFileToExcel
             }
         }
 
-        public int GetValuesPerRow()
-        {
-            using (var streamReader = File.OpenText(filePath))
-            {
-                string[] lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray());
-            }
+        //public int GetValuesPerRow()
+        //{
+        //    using (var streamReader = File.OpenText(filePath))
+        //    {
+        //        string[] lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray());
+        //    }
 
-        }
+        //}
 
     }
 }
