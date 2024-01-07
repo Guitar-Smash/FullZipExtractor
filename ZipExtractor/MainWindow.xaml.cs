@@ -41,11 +41,11 @@ namespace ZipExtractor
             if(result == true)
             {
                 zipFileTextBox.Text = dialog.FileNames[0];
-                destPathTextBox.Text = UpdateDefaultExtractionPath();
+                destPathTextBox.Text = GetDefaultExtractionPath();
             }
         }
 
-        private string UpdateDefaultExtractionPath()
+        private string GetDefaultExtractionPath()
         {
             string[] substrings = zipFileTextBox.Text.Split('\\');
             string daZip = substrings.Last();
@@ -84,13 +84,6 @@ namespace ZipExtractor
 
         public static void ExtractFile(string zipPath, string extractPath)
         {
-            Console.WriteLine(zipPath);
-
-            if (Directory.Exists(extractPath))
-                Directory.Delete(extractPath, true);
-
-            Directory.CreateDirectory(extractPath);
-
             // Extract current zip file
             ZipFile.ExtractToDirectory(zipPath, extractPath);
 
@@ -103,35 +96,22 @@ namespace ZipExtractor
                 string[] substrings = filePath.Split('\\');
                 string newPath = "";
 
-                for (int j = 0; j < substrings.Length - 1; j++)
+                for (int j = 0; j < substrings.Length - 2; j++)
                 {
-                    if (j < substrings.Length - 2)
-                    {
-                        newPath += substrings[j];
-                        newPath += "\\";
-                    }
-
-                    else
-                        newPath += substrings[substrings.Length - 1];
+                    newPath += substrings[j];
+                    newPath += "\\";
                 }
+                newPath += substrings[substrings.Length - 1];
 
                 // If current entry is a file
-                if(File.Exists(allNestedEntries[i]))
+                if (File.Exists(allNestedEntries[i]))
                     File.Move(allNestedEntries[i], newPath);
                 // Else if current entry is a directory
                 else if (Directory.Exists(allNestedEntries[i]))
                     Directory.Move(allNestedEntries[i], newPath);
-
-                Console.WriteLine(newPath);
-
-                //Console.WriteLine(allNestedEntries.ElementAt(i));
             }
 
             Directory.Delete(allNestedEntries[0]);
-
-
-
-
 
             //// Enumerate nested zip files
             IEnumerable<string> nestedZipFiles = Directory.EnumerateFiles(extractPath, "*.zip", SearchOption.AllDirectories);
